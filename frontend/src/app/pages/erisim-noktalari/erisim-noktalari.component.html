@@ -1,0 +1,211 @@
+<div class="top">
+    <i class="uil uil-bars sidebar-toggle"></i>
+    <span class="text">Erişim Noktaları</span>
+</div>
+
+<div class="dash-content">
+    <div class="activity">
+        <div class="title">
+            <form [formGroup]="searchForm" (ngSubmit)="searchErisimNoktasi()">
+                <div class="search-box">
+                    <i id="search-i" class="uil uil-search"></i>
+                    <input formControlName="searchTerm" type="text" placeholder="Birşeyler Arayın...">
+                </div>
+
+                <select class="select-filter" formControlName="filter" id="filter">
+                    <option value="" selected hidden>Başlığa Göre Ara</option>
+                    <option value="mac">Mac Adresi</option>
+                    <option value="kapi_ismi">Kapı İsmi</option>
+                    <option value="erisim">Erişim Seviyesi</option>
+                    <option value="baslangic_saat">Erişim Başlangıç Saati</option>
+                    <option value="bitis_saat">Erişim Bitiş Saati</option>
+                    <option value="gunler">Erişim Günleri</option>
+                </select>
+
+            </form>
+
+        </div>
+
+        <div *ngIf="tableSuccessMsg" class="alert alert-success alert-dismissible fade show mt-2 mr-20" role="alert" style="width: 60%;">
+            <strong> {{tableSuccessMsg}} </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div *ngIf="dataExist" class="alert alert-warning alert-dismissible fade show mt-2 mr-20" role="alert" style="width: 60%;">
+            <strong>Sistemde herhangi bir erişim noktası kaydı bulunamadı</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="activity-data">
+
+            <table class="content-table" id="table-erisimler">
+                <thead>
+                    <tr>
+                        <th>MAC Adresi</th>
+                        <th>Kapı İsmi</th>
+                        <th>Erişim Seviyesi</th>
+                        <th>Erişim Saatleri</th>
+                        <th>Erişisim Günleri</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of erisim_noktalari">
+                        <td> {{item.mac}} </td>
+                        <td> {{item.kapi_ismi}} </td>
+                        <td> {{item.erisim}} </td>
+                        <td> {{item.baslangic_saat}}-{{item.bitis_saat}} </td>
+                        <td> {{item.gunler}} </td>
+                        <td><a id="delete" (click)="deleteErisimNoktasi(item.mac)">Sil</a>
+                            <a id="update" [routerLink]="['/erisim-noktalari/update', item.mac]">Güncelle</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Add Form -->
+            <div *ngIf="isAddForm" class="center">
+                <h1>Erişim Noktası Kayıt Et</h1>
+                <form [formGroup]="addForm" (ngSubmit)="onAdd()">
+                    <div class="txt_field">
+                        <input type="text" required formControlName="mac">
+                        <span></span>
+                        <label>Kapı Mac Adresi</label>
+                    </div>
+
+                    <div class="txt_field">
+                        <input type="text" required formControlName="kapi_ismi">
+                        <span></span>
+                        <label>Kapı İsmi</label>
+                    </div>
+
+                    <div>
+                      <select required class="erisim-select" formControlName="erisim" id="erisim_seviyesi">
+                        <option value="" hidden selected>Erişim Seviyesi Seçin</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+
+                    <p id="question-p" (click)="showInfo()">?</p>
+
+                    <div *ngIf="infoForm" class="info-dialog">
+                      <h6>Seviyeye Göre Erişim İzni Olan Kart Tipleri</h6>
+                      <p>1 -> Misafir-Stajyer-Çalışan-Yönetici</p><br>
+                      <p>2 -> Stajyer-Çalışan-Yönetici</p><br>
+                      <p>3 -> Çalışan-Yönetici</p><br>
+                      <p>4 -> Yönetici</p>
+                    </div>
+
+                    </div>
+
+                    <div class="start-time_div">
+                        <p>Kapı Erişim Saati Başlangıcı:</p>
+                        <input required type="time" formControlName="baslangic_saat" class="time start-time"> <br>
+                    </div>
+
+                    <div class="end-time-div">
+                        <p>Kapı Erişim Saati Sonu:</p>
+                        <input required type="time" formControlName="bitis_saat" class="time end-time">
+                    </div>
+
+                    <div class="days-div">
+                        <p><b> Erişim Günlerini Belirleyin:</b></p><br>
+
+                        <input formControlName="gunler" class="days-textbox" type="text" required
+                            placeholder="Her bir günü - ile ayırın örn:Pazartesi-Salı-Çarşamba">
+
+                    </div>
+
+
+
+                    <input type="submit" value="Kayıt Et">
+
+                    <!--Alert messages-->
+
+                    <div *ngIf="errorMsg" class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+                        <strong> {{errorMsg}} </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div *ngIf="formSuccessMsg" class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                        <strong> {{formSuccessMsg}} </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- Update Form -->
+            <div *ngIf="!isAddForm" class="center">
+              <h1>Erişim Noktası Güncelle</h1>
+              <form [formGroup]="updateForm" (ngSubmit)="onUpdate()">
+                  <div class="txt_field">
+                      <input type="text" required formControlName="mac">
+                      <span></span>
+                      <label>Kapı Mac Adresi</label>
+                  </div>
+
+                  <div class="txt_field">
+                      <input type="text" required formControlName="kapi_ismi">
+                      <span></span>
+                      <label>Kapı İsmi</label>
+                  </div>
+
+                  <select required class="erisim-select" formControlName="erisim" id="erisim_seviyesi">
+                      <option value="" hidden selected>Erişim Seviyesi Seçin</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                  </select>
+
+                  <p id="question-p" (click)="showInfo()">?</p>
+
+                    <div *ngIf="infoForm" class="info-dialog">
+                      <h6>Seviyeye Göre Erişim İzni Olan Kart Tipleri</h6>
+                      <p>1 -> Misafir-Stajyer-Çalışan-Yönetici</p><br>
+                      <p>2 -> Stajyer-Çalışan-Yönetici</p><br>
+                      <p>3 -> Çalışan-Yönetici</p><br>
+                      <p>4 -> Yönetici</p>
+                    </div>
+
+                  <div class="start-time_div">
+                      <p>Kapı Erişim Saati Başlangıcı:</p>
+                      <input required type="time" formControlName="baslangic_saat" class="time start-time"> <br>
+                  </div>
+
+                  <div class="end-time-div">
+                      <p>Kapı Erişim Saati Sonu:</p>
+                      <input required type="time" formControlName="bitis_saat" class="time end-time">
+                  </div>
+
+                  <div class="days-div">
+                      <p><b> Erişim Günlerini Belirleyin:</b></p><br>
+
+                      <input formControlName="gunler" class="days-textbox" type="text" required
+                          placeholder="Her bir günü - ile ayırın örn:Pazartesi-Salı-Çarşamba">
+
+                  </div>
+
+
+
+                  <input type="submit" value="Güncelle">
+
+                  <!--Alert messages-->
+
+                  <div *ngIf="errorMsg" class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+                      <strong> {{errorMsg}} </strong>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+
+                  <div *ngIf="formSuccessMsg" class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                      <strong> {{formSuccessMsg}} </strong>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              </form>
+          </div>
+
+        </div>
+    </div>
+</div>

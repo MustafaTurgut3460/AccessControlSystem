@@ -1,0 +1,74 @@
+<div class="top">
+    <i class="uil uil-bars sidebar-toggle"></i>
+    <span class="text">Erişim Kayıtları</span>
+
+</div>
+
+<div class="dash-content">
+
+    <div class="activity">
+        <div class="title">
+            <form [formGroup]="searchForm" (ngSubmit)="searchErisimKayit()">
+
+                <div class="search-box">
+                    <i id="search-i" class="uil uil-search"></i>
+                    <input formControlName="searchTerm" type="text" placeholder="Birşeyler Arayın...">
+                </div>
+
+                <select class="select-filter" formControlName="filter" id="filter">
+                    <option value="" selected hidden>Başlığa Göre Ara</option>
+                    <option value="ad_soyad">Ad Soyad</option>
+                    <option value="kart_id">Kart Id</option>
+                    <option value="zaman">Zaman</option>
+                    <option value="rol">Rol</option>
+                    <option value="durum">Durum</option>
+                    <option value="kapi">Kapı</option>
+                </select>
+
+            </form>
+        </div>
+
+        <div *ngIf="successMsg" class="alert alert-success alert-dismissible fade show mt-2" role="alert" style="width: 82%;">
+            <strong> {{successMsg}} </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div *ngIf="dataExist" class="alert alert-warning alert-dismissible fade show mt-2" role="alert" style="width: 67%;">
+            <strong>Sistemde herhangi bir erişim kaydına ulaşılamadı</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="activity-data">
+
+            <table class="content-table" id="erisim-kayitlari-div">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Ad Soyad</th>
+                        <th>Kart Id</th>
+                        <th>Zaman</th>
+                        <th>Rol</th>
+                        <th>Durum</th>
+                        <th>Kapı</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--Veritabanından gelen verilere göre tabloyu dolduruyoruz-->
+                    <tr *ngFor="let item of erisim_kayitlari">
+                        <td> {{item.id}} </td>
+                        <td> {{item.ad_soyad}} </td>
+                        <td> {{item.kart_id.split("_")[0]}} </td>
+                        <td> {{item.zaman}} </td>
+                        <td> {{item.rol}} </td>
+                        <td *ngIf="item.durum=='İzin Verildi'" style="color: green; font-weight: bold;"> {{item.durum}} </td>
+                        <td *ngIf="item.durum=='İzin Verilmedi'" style="color: red; font-weight: bold;"> {{item.durum}} </td>
+                        <td> {{item.kapi}} </td>
+                        <td><a id="delete" (click)="deleteErisimKayit(item.id)">Sil</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

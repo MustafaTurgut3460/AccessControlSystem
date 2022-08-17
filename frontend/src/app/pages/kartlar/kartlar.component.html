@@ -1,0 +1,144 @@
+<div class="top">
+    <i class="uil uil-bars sidebar-toggle"></i>
+    <span class="text">Kartlar</span>
+
+</div>
+
+
+<div class="dash-content">
+    <div class="activity">
+        <div class="title">
+            <form [formGroup]="searchForm" (ngSubmit)="searchKart()">
+                <div class="search-box">
+                    <i id="search-i" class="uil uil-search"></i>
+                    <input formControlName="searchTerm" type="text" placeholder="Birşeyler Arayın...">
+                </div>
+                <select class="select-filter" formControlName="filter" id="filter">
+                    <option value="" selected hidden>Başlığa Göre Ara</option>
+                    <option value="kart_sahibi">Kart Sahibi</option>
+                    <option value="kart_turu">Kart Türü</option>
+                </select>
+
+            </form>
+
+        </div>
+
+        <div *ngIf="tableSuccessMsg" class="alert alert-success alert-dismissible fade show mt-2" role="alert"
+            style="width: 44%;">
+            <strong> {{tableSuccessMsg}} </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div *ngIf="dataExist" style="width: 40%;" class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+            <strong>Sistemde herhangi bir kart kaydı bulunamadı</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="activity-data">
+
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Kart Sahibi</th>
+                        <th>Kart Türü</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of kartlar">
+                        <td> {{item.id.split("_")[0]}} </td>
+                        <td> {{item.kart_sahibi}} </td>
+                        <td> {{item.kart_turu}} </td>
+                        <td><a id="delete" (click)="deleteKart(item.id)">Sil</a>
+                            <a id="update" [routerLink]="['/kartlar/update', item.id]">Güncelle</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div *ngIf="isAddForm" class="center" id="kart-ekle-div">
+                <h1>Kart Kayıt Et</h1>
+                <form [formGroup]="addForm" (ngSubmit)="onAdd()">
+                    <div class="txt_field">
+                        <input type="text" required formControlName="id">
+                        <span></span>
+                        <label>Kart Id</label>
+                    </div>
+
+                    <div class="txt_field">
+                        <input type="text" required formControlName="kart_sahibi">
+                        <span></span>
+                        <label>Kart Sahibi</label>
+                    </div>
+
+                    <select required formControlName="kart_turu" id="kart_tipi">
+                        <option value="" selected hidden>Kart Tipi Seçin</option>
+                        <option value="Yönetici">Yönetici</option>
+                        <option value="Stajyer">Stajyer</option>
+                        <option value="Misafir">Misafir</option>
+                        <option value="Çalışan">Çalışan</option>
+                    </select>
+
+                    <input type="submit" value="Kayıt Et">
+
+                    <!--Alert messages-->
+
+                    <div *ngIf="errorMsg" class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+                        <strong> {{errorMsg}} </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div *ngIf="formSuccessMsg" class="alert alert-success alert-dismissible fade show mt-2"
+                        role="alert">
+                        <strong> {{formSuccessMsg}} </strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div *ngIf="!isAddForm" class="center" id="kart-ekle-div">
+              <h1>Kart Güncelle</h1>
+              <form [formGroup]="updateForm" (ngSubmit)="onUpdate()">
+                  <div class="txt_field">
+                      <input type="text" required formControlName="id">
+                      <span></span>
+                      <label>Kart Id</label>
+                  </div>
+
+                  <div class="txt_field">
+                      <input type="text" required formControlName="kart_sahibi">
+                      <span></span>
+                      <label>Kart Sahibi</label>
+                  </div>
+
+                  <select required formControlName="kart_turu" id="kart_tipi">
+                      <option value="" selected hidden>Kart Tipi Seçin</option>
+                      <option value="Yönetici">Yönetici</option>
+                      <option value="Stajyer">Stajyer</option>
+                      <option value="Misafir">Misafir</option>
+                      <option value="Çalışan">Çalışan</option>
+                  </select>
+
+                  <input type="submit" value="Güncelle">
+
+                  <!--Alert messages-->
+
+                  <div *ngIf="errorMsg" class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+                      <strong> {{errorMsg}} </strong>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+
+                  <div *ngIf="formSuccessMsg" class="alert alert-success alert-dismissible fade show mt-2"
+                      role="alert">
+                      <strong> {{formSuccessMsg}} </strong>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+
+              </form>
+          </div>
+
+        </div>
+    </div>
+</div>

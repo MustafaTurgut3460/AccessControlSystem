@@ -1,0 +1,73 @@
+<div class="top">
+  <i class="uil uil-bars sidebar-toggle"></i>
+  <span class="text">Anasayfa</span>
+
+</div>
+
+<div class="dash-content">
+  <div class="activity">
+
+    <div class="overview">
+      <div class="boxes">
+        <div class="box box1">
+          <i class="uil uil-check"></i>
+          <span class="text">Toplam Geçiş Sayısı</span>
+          <span class="number"> {{counts.countAccess}} </span>
+        </div>
+        <div class="box box2">
+          <i class="uil uil-credit-card"></i>
+          <span class="text">Toplam Kart Sayısı</span>
+          <span class="number"> {{counts.countCard}} </span>
+        </div>
+        <div class="box box3">
+          <i class="uil uil-unlock"></i>
+          <span class="text">Toplam Erişim Noktası Sayısı</span>
+          <span class="number"> {{counts.countAccessPoint}} </span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="gosterilenPanel==1" style="background-color: #339900;" class="new-access-container">
+
+      <h3>Yeni Erişim İsteği</h3>
+
+      <p><b>Kart Id: </b>{{accessData.kart_id}}</p>
+      <p><b>Kapı Mac Adresi: </b>{{accessData.kapi_mac}}</p>
+      <p><b>Kart Sahibi: </b>{{accessData.kart_sahibi}}</p>
+      <p><b>Kapı İsmi: </b>{{accessData.kapi_ismi}}</p>
+      <p><b>Saat: </b>{{accessData.zaman}}</p>
+      <h5>Geçiş İsteği: <b>İzin Verildi</b></h5>
+    </div>
+
+    <div *ngIf="gosterilenPanel==2" style="background-color: #daae00;" class="new-access-container">
+
+      <h3> {{accessData.mesaj}} </h3>
+
+      <p><b>Kart Id: </b>{{accessData.kart_id}}</p>
+      <p><b>Kapı Mac Adresi: </b>{{accessData.kapi_mac}}</p>
+      <p><b>Kart Sahibi: </b>{{accessData.kart_sahibi}}</p>
+      <p><b>Kapı İsmi: </b>{{accessData.kapi_ismi}}</p>
+      <p><b>Saat: </b>{{accessData.zaman}}</p>
+      <h5>Geçiş İsteği: <b>İzin Verilmedi</b></h5>
+    </div>
+
+    <div *ngIf="gosterilenPanel==3" style="background-color: #cc0000;" class="new-access-container">
+      <h3>Yeni Erişim İsteği</h3>
+
+      <p><b>Kart Id:</b> {{accessData.kart_id}}</p>
+      <p><b>Kapı Mac Adresi:</b> {{accessData.kapi_mac}}</p>
+      <p><b>Kart Sahibi:</b> {{accessData.kart_sahibi}}</p>
+      <p><b>Kapı İsmi:</b> {{accessData.kapi_ismi}}</p>
+      <p><b>Saat:</b> {{accessData.zaman}}</p>
+      <h5>Geçiş İsteği: <b>İzin Verilmedi</b></h5>
+    </div>
+
+    <div *ngIf="gosterilenPanel==0" class="new-access-container">
+
+      <h2 style="padding-top: 170px;">Şuanlık Bir Erişim Bulunmuyor...</h2>
+    </div>
+
+
+  </div>
+</div>
+
